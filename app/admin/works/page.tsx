@@ -1,89 +1,95 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Plus } from "lucide-react"
-import { WorksTable } from "@/components/admin/works-table"
-import { Pagination } from "@/components/admin/pagination"
-import { DeleteConfirmModal } from "@/components/admin/delete-confirm-modal"
-import { useSnackbar } from "@/components/admin/snackbar-provider"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Plus } from "lucide-react";
+import { WorksTable } from "@/components/admin/works-table";
+import { Pagination } from "@/components/admin/pagination";
+import { DeleteConfirmModal } from "@/components/admin/delete-confirm-modal";
+import { useSnackbar } from "@/components/admin/snackbar-provider";
 
 interface Work {
-  slug: string
-  title: string
-  category: string
-  year: string
-  image: string
+  slug: string;
+  title: string;
+  category: string;
+  year: string;
+  image: string;
 }
 
 export default function WorksManagementPage() {
-  const { showSnackbar } = useSnackbar()
-  const [works, setWorks] = useState<Work[]>([])
-  const [loading, setLoading] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [workToDelete, setWorkToDelete] = useState<string | null>(null)
+  const { showSnackbar } = useSnackbar();
+  const [works, setWorks] = useState<Work[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [workToDelete, setWorkToDelete] = useState<string | null>(null);
 
-  const itemsPerPage = 5
+  const itemsPerPage = 5;
 
   useEffect(() => {
-    fetchWorks()
-  }, [currentPage])
+    fetchWorks();
+  }, [currentPage]);
 
   const fetchWorks = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const response = await fetch(`/api/works?page=${currentPage}&limit=${itemsPerPage}`)
-      const data = await response.json()
-      setWorks(data.works)
-      setTotalPages(data.totalPages)
+      const response = await fetch(
+        `/api/works?page=${currentPage}&limit=${itemsPerPage}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch works");
+      }
+      const data = await response.json();
+      console.log("fetchWorks", data);
+      setWorks(data.works);
+      setTotalPages(data.totalPages);
     } catch (error) {
-      console.error("Error fetching works:", error)
-      showSnackbar("Failed to load works", "error")
+      console.error("Error fetching works:", error);
+      showSnackbar("Failed to load works", "error");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
+    setCurrentPage(page);
+  };
 
   const handleDeleteClick = (slug: string) => {
-    setWorkToDelete(slug)
-    setIsDeleteModalOpen(true)
-  }
+    setWorkToDelete(slug);
+    setIsDeleteModalOpen(true);
+  };
 
   const handleDeleteConfirm = async () => {
-    if (!workToDelete) return
+    if (!workToDelete) return;
 
     try {
       const response = await fetch(`/api/works/${workToDelete}`, {
         method: "DELETE",
-      })
+      });
 
       if (response.ok) {
-        showSnackbar("Work deleted successfully", "success")
+        showSnackbar("Work deleted successfully", "success");
         // Refresh the works list
-        fetchWorks()
+        fetchWorks();
       } else {
-        showSnackbar("Failed to delete work", "error")
+        showSnackbar("Failed to delete work", "error");
       }
 
       // Close the modal
-      setIsDeleteModalOpen(false)
-      setWorkToDelete(null)
+      setIsDeleteModalOpen(false);
+      setWorkToDelete(null);
     } catch (error) {
-      console.error("Error deleting work:", error)
-      showSnackbar("An error occurred while deleting the work", "error")
+      console.error("Error deleting work:", error);
+      showSnackbar("An error occurred while deleting the work", "error");
     }
-  }
+  };
 
   const handleDeleteCancel = () => {
-    setIsDeleteModalOpen(false)
-    setWorkToDelete(null)
-  }
+    setIsDeleteModalOpen(false);
+    setWorkToDelete(null);
+  };
 
   return (
     <div>
@@ -104,10 +110,18 @@ export default function WorksManagementPage() {
         </div>
       ) : (
         <>
-          <WorksTable works={works} onEdit={(slug) => {}} onDelete={handleDeleteClick} />
+          <WorksTable
+            works={works}
+            onEdit={(slug) => {}}
+            onDelete={handleDeleteClick}
+          />
 
           <div className="mt-6">
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </div>
         </>
       )}
@@ -120,5 +134,5 @@ export default function WorksManagementPage() {
         onCancel={handleDeleteCancel}
       />
     </div>
-  )
+  );
 }

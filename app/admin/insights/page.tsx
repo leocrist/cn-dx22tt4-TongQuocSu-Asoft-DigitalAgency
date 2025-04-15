@@ -1,89 +1,94 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { Plus } from "lucide-react"
-import { InsightsTable } from "@/components/admin/insights-table"
-import { Pagination } from "@/components/admin/pagination"
-import { DeleteConfirmModal } from "@/components/admin/delete-confirm-modal"
-import { useSnackbar } from "@/components/admin/snackbar-provider"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Plus } from "lucide-react";
+import { InsightsTable } from "@/components/admin/insights-table";
+import { Pagination } from "@/components/admin/pagination";
+import { DeleteConfirmModal } from "@/components/admin/delete-confirm-modal";
+import { useSnackbar } from "@/components/admin/snackbar-provider";
 
 interface Insight {
-  slug: string
-  title: string
-  date: string
-  author: string
-  image: string
+  slug: string;
+  title: string;
+  date: string;
+  author: string;
+  image: string;
 }
 
 export default function InsightsManagementPage() {
-  const { showSnackbar } = useSnackbar()
-  const [insights, setInsights] = useState<Insight[]>([])
-  const [loading, setLoading] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [insightToDelete, setInsightToDelete] = useState<string | null>(null)
+  const { showSnackbar } = useSnackbar();
+  const [insights, setInsights] = useState<Insight[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [insightToDelete, setInsightToDelete] = useState<string | null>(null);
 
-  const itemsPerPage = 5
+  const itemsPerPage = 5;
 
   useEffect(() => {
-    fetchInsights()
-  }, [currentPage])
+    fetchInsights();
+  }, [currentPage]);
 
   const fetchInsights = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const response = await fetch(`/api/insights?page=${currentPage}&limit=${itemsPerPage}`)
-      const data = await response.json()
-      setInsights(data.insights)
-      setTotalPages(data.totalPages)
+      const response = await fetch(
+        `/api/insights?page=${currentPage}&limit=${itemsPerPage}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch insights");
+      }
+      const data = await response.json();
+      setInsights(data.insights);
+      setTotalPages(data.totalPages);
     } catch (error) {
-      console.error("Error fetching insights:", error)
-      showSnackbar("Failed to load insights", "error")
+      console.error("Error fetching insights:", error);
+      showSnackbar("Failed to load insights", "error");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
+    setCurrentPage(page);
+  };
 
   const handleDeleteClick = (slug: string) => {
-    setInsightToDelete(slug)
-    setIsDeleteModalOpen(true)
-  }
+    setInsightToDelete(slug);
+    setIsDeleteModalOpen(true);
+  };
 
   const handleDeleteConfirm = async () => {
-    if (!insightToDelete) return
+    if (!insightToDelete) return;
 
     try {
       const response = await fetch(`/api/insights/${insightToDelete}`, {
         method: "DELETE",
-      })
+      });
 
       if (response.ok) {
-        showSnackbar("Insight deleted successfully", "success")
+        showSnackbar("Insight deleted successfully", "success");
         // Refresh the insights list
-        fetchInsights()
+        fetchInsights();
       } else {
-        showSnackbar("Failed to delete insight", "error")
+        showSnackbar("Failed to delete insight", "error");
       }
 
       // Close the modal
-      setIsDeleteModalOpen(false)
-      setInsightToDelete(null)
+      setIsDeleteModalOpen(false);
+      setInsightToDelete(null);
     } catch (error) {
-      console.error("Error deleting insight:", error)
-      showSnackbar("An error occurred while deleting the insight", "error")
+      console.error("Error deleting insight:", error);
+      showSnackbar("An error occurred while deleting the insight", "error");
     }
-  }
+  };
 
   const handleDeleteCancel = () => {
-    setIsDeleteModalOpen(false)
-    setInsightToDelete(null)
-  }
+    setIsDeleteModalOpen(false);
+    setInsightToDelete(null);
+  };
 
   return (
     <div>
@@ -104,10 +109,18 @@ export default function InsightsManagementPage() {
         </div>
       ) : (
         <>
-          <InsightsTable insights={insights} onEdit={(slug) => {}} onDelete={handleDeleteClick} />
+          <InsightsTable
+            insights={insights}
+            onEdit={(slug) => {}}
+            onDelete={handleDeleteClick}
+          />
 
           <div className="mt-6">
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </div>
         </>
       )}
@@ -120,5 +133,5 @@ export default function InsightsManagementPage() {
         onCancel={handleDeleteCancel}
       />
     </div>
-  )
+  );
 }

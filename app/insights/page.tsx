@@ -34,7 +34,10 @@ export default async function InsightsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {insights.map((insight: any, index: number) => (
             <ScrollReveal key={index} delay={200 + index * 100}>
-              <Link href={`/insights/${insight.slug}`} className="block group">
+              <Link
+                href={`/insights/${insight.slug}`}
+                className="block group h-full"
+              >
                 <div className="rounded-3xl overflow-hidden bg-[#f5f3ff] h-full">
                   <div className="h-[240px] overflow-hidden">
                     <Image

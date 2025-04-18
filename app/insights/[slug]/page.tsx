@@ -56,9 +56,9 @@ export default function InsightDetailPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen">
+      <main className="min-h-screen flex flex-col justify-center items-center">
         <Header />
-        <div className="px-6 md:px-12 py-16 text-center">
+        <div className="px-6 md:px-12 py-16 text-center flex-1">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#6E13E8] mx-auto"></div>
         </div>
         <Footer />

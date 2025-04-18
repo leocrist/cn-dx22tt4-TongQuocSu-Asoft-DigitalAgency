@@ -60,9 +60,9 @@ export default function WorkDetailPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen">
+      <main className="min-h-screen flex flex-col justify-center items-center">
         <Header />
-        <div className="px-6 md:px-12 py-16 text-center">
+        <div className="px-6 md:px-12 py-16 text-center flex-1">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#6E13E8] mx-auto"></div>
         </div>
         <Footer />
@@ -93,7 +93,6 @@ export default function WorkDetailPage() {
     );
   }
   const detail = [
-    { label: "Owner", key: "owner" },
     { label: "Category", key: "category" },
     { label: "Duration", key: "duration" },
     { label: "Budget", key: "budget" },
@@ -178,7 +177,10 @@ export default function WorkDetailPage() {
               delay={200 + index * 100}
               direction={index % 2 === 0 ? "left" : "right"}
             >
-              <Link href={`/works/${relatedProject.slug}`} className="block">
+              <Link
+                href={`/works/${relatedProject.slug}`}
+                className="block shadow-lg rounded-3xl overflow-hidden p-4 h-full"
+              >
                 <div className="rounded-3xl overflow-hidden mb-4">
                   <Image
                     src={relatedProject.image || "/placeholder.svg"}

@@ -32,7 +32,7 @@ export default async function WorksPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {works.map((work: any, index: number) => (
             <ScrollReveal key={index} delay={200 + index * 100}>
-              <div>
+              <div className="shadow-lg rounded-3xl overflow-hidden p-4 h-full">
                 <Link href={`/works/${work.slug}`} className="block group">
                   <div className="rounded-3xl overflow-hidden mb-6">
                     <Image

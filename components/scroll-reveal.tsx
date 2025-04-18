@@ -17,8 +17,8 @@ export function ScrollReveal({
   className = "",
   delay = 0,
   direction = "up",
-  distance = 30,
-  duration = 300, // Changed from 800 to 400 (50% faster)
+  distance = 40,
+  duration = 200, // Changed from 800 to 400 (50% faster)
   once = true,
 }: ScrollRevealProps) {
   const elementRef = useRef<HTMLDivElement>(null);

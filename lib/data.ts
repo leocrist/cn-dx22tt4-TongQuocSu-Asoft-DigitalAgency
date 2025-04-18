@@ -120,12 +120,12 @@ The journey from the initial concept to a fully functional and live website is s
       { label: "Preview Link", value: "Visit Project" },
     ],
   },
-]
+];
 
 // Get related works
 export function getRelatedWorks(slug: string, limit = 2) {
-  const currentWork = works.find((work) => work.slug === slug)
-  if (!currentWork) return []
+  const currentWork = works.find((work) => work.slug === slug);
+  if (!currentWork) return [];
 
   return works
     .filter((work) => work.slug !== slug)
@@ -136,7 +136,7 @@ export function getRelatedWorks(slug: string, limit = 2) {
       image: work.image,
       category: work.category,
       slug: work.slug,
-    }))
+    }));
 }
 
 // Insights data
@@ -337,9 +337,83 @@ export const insights = [
       slug: "future-of-web-design",
     },
   },
-]
+];
 
 // Get insight by slug
 export function getInsightBySlug(slug: string) {
-  return insights.find((insight) => insight.slug === slug)
+  return insights.find((insight) => insight.slug === slug);
+}
+
+import { supabase } from "./supabase";
+
+export async function fetchPaginatedData(
+  table: string,
+  page: number = 1,
+  limit: number = 10,
+  options: {
+    select?: string;
+    orderBy?: string;
+    orderDirection?: "asc" | "desc";
+    relations?: string[];
+  } = {}
+) {
+  const startIndex = (page - 1) * limit;
+  const {
+    select = "*",
+    orderBy = "created_at",
+    orderDirection = "desc",
+    relations = [],
+  } = options;
+
+  try {
+    // Get total count
+    const { count } = await supabase
+      .from(table)
+      .select("*", { count: "exact", head: true });
+
+    // Build select query
+    let selectQuery = select;
+    if (relations.length > 0) {
+      selectQuery = `${select}, ${relations
+        .map((rel) => `${rel}(*)`)
+        .join(", ")}`;
+    }
+
+    // Get paginated data
+    const { data, error } = await supabase
+      .from(table)
+      .select(selectQuery)
+      .range(startIndex, startIndex + limit - 1)
+      .order(orderBy, { ascending: orderDirection === "asc" });
+
+    if (error) throw error;
+
+    // Format the data if there are relations
+    const formattedData = data.map((item) => {
+      const result = { ...item };
+      relations.forEach((rel) => {
+        if (item[rel]) {
+          result[rel] = item[rel].map((detail: any) => ({
+            label: detail.label,
+            value: detail.value,
+          }));
+        }
+      });
+      return result;
+    });
+
+    // Calculate total pages
+    const totalItems = count || 0;
+    const totalPages = Math.ceil(totalItems / limit);
+
+    return {
+      data: formattedData,
+      currentPage: page,
+      totalPages,
+      totalItems,
+    };
+  } catch (error) {
+    console.error(`Error fetching ${table}:`, error);
+    throw error;
+  }
 }

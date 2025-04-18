@@ -41,8 +41,7 @@ export default function WorksManagementPage() {
         throw new Error("Failed to fetch works");
       }
       const data = await response.json();
-      console.log("fetchWorks", data);
-      setWorks(data.works);
+      setWorks(data.data);
       setTotalPages(data.totalPages);
     } catch (error) {
       console.error("Error fetching works:", error);

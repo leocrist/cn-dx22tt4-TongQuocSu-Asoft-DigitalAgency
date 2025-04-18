@@ -1,12 +1,19 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CallToAction } from "@/components/call-to-action"
-import Link from "next/link"
-import Image from "next/image"
-import { ScrollReveal } from "@/components/scroll-reveal"
-import { insights } from "@/lib/data"
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { CallToAction } from "@/components/call-to-action";
+import Link from "next/link";
+import Image from "next/image";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { fetchPaginatedData } from "@/lib/data";
 
-export default function InsightsPage() {
+async function getInsights() {
+  const result = await fetchPaginatedData("insights", 1, 100);
+  return result;
+}
+
+export default async function InsightsPage() {
+  const { data: insights } = await getInsights();
+
   return (
     <main className="min-h-screen">
       <Header />
@@ -14,16 +21,18 @@ export default function InsightsPage() {
       <section className="px-6 md:px-12 py-16">
         <ScrollReveal>
           <div className="mb-12 text-center">
-            <h1 className="text-5xl font-bold mb-4 animate-title-reveal">Insights</h1>
+            <h1 className="text-5xl font-bold mb-4 animate-title-reveal">
+              Insights
+            </h1>
             <p className="text-gray-700 max-w-2xl mx-auto animate-description">
-              Explore our collection of articles, guides, and thought leadership on web design, UI/UX, branding, and
-              digital innovation.
+              Explore our collection of articles, guides, and thought leadership
+              on web design, UI/UX, branding, and digital innovation.
             </p>
           </div>
         </ScrollReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {insights.map((insight, index) => (
+          {insights.map((insight: any, index: number) => (
             <ScrollReveal key={index} delay={200 + index * 100}>
               <Link href={`/insights/${insight.slug}`} className="block group">
                 <div className="rounded-3xl overflow-hidden bg-[#f5f3ff] h-full">
@@ -56,5 +65,5 @@ export default function InsightsPage() {
       <CallToAction />
       <Footer />
     </main>
-  )
+  );
 }

@@ -1,29 +1,36 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { CallToAction } from "@/components/call-to-action"
-import Link from "next/link"
-import Image from "next/image"
-import { ScrollReveal } from "@/components/scroll-reveal"
-import { works } from "@/lib/data"
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { CallToAction } from "@/components/call-to-action";
+import Link from "next/link";
+import Image from "next/image";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { fetchPaginatedData } from "@/lib/data";
 
-export default function WorksPage() {
+async function getWorks() {
+  const result = await fetchPaginatedData("works", 1, 100, {
+    relations: ["work_details"],
+  });
+  return result;
+}
+
+export default async function WorksPage() {
+  const { data: works } = await getWorks();
+
   return (
     <main className="min-h-screen">
       <Header />
 
-      <section className="px-6 md:px-12 py-16">
-        <ScrollReveal>
-          <div className="mb-12 text-center">
-            <h1 className="text-5xl font-bold mb-4 animate-title-reveal">Our Works</h1>
-            <p className="text-gray-700 max-w-2xl mx-auto animate-description">
-              Explore our portfolio of innovative digital solutions, branding projects, and UI/UX designs that have
-              helped our clients achieve their business goals.
-            </p>
-          </div>
-        </ScrollReveal>
+      <ScrollReveal>
+        <section className="px-6 md:px-12 py-16 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-12 animate-title-reveal">
+            Our Works
+          </h1>
+        </section>
+      </ScrollReveal>
 
+      <section className="px-6 md:px-12 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {works.map((work, index) => (
+          {works.map((work: any, index: number) => (
             <ScrollReveal key={index} delay={200 + index * 100}>
               <div>
                 <Link href={`/works/${work.slug}`} className="block group">
@@ -55,5 +62,5 @@ export default function WorksPage() {
       <CallToAction />
       <Footer />
     </main>
-  )
+  );
 }

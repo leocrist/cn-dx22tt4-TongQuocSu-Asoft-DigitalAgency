@@ -1,11 +1,13 @@
-import { ParallaxImage } from "./parallax-image"
-import { ScrollReveal } from "./scroll-reveal"
+import { ParallaxImage } from "./parallax-image";
+import { ScrollReveal } from "./scroll-reveal";
 
 export function AboutPhilosophy() {
   return (
     <section className="px-6 md:px-12 py-16">
       <ScrollReveal>
-        <h2 className="text-5xl md:text-6xl font-bold mb-12 animate-title-reveal">Our Philosophy</h2>
+        <h2 className="text-5xl md:text-6xl font-bold animate-title-reveal">
+          Our Philosophy
+        </h2>
       </ScrollReveal>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
@@ -24,11 +26,14 @@ export function AboutPhilosophy() {
           <ScrollReveal delay={400} direction="right">
             <div>
               <p className="text-lg text-gray-700 leading-relaxed mb-8 animate-description">
-                At Infinity Solutions, we operate on the principle that every brand has a unique story waiting to be
-                told. We believe in pushing the boundaries of creativity and technology to narrate your story in the
-                most compelling way. Our approach is holistic and human-centric, focusing on creating experiences that
-                resonate with your audience and drive engagement. We're not just about making things look pretty; we're
-                about creating digital solutions that work.
+                At Infinity Solutions, we operate on the principle that every
+                brand has a unique story waiting to be told. We believe in
+                pushing the boundaries of creativity and technology to narrate
+                your story in the most compelling way. Our approach is holistic
+                and human-centric, focusing on creating experiences that
+                resonate with your audience and drive engagement. We're not just
+                about making things look pretty; we're about creating digital
+                solutions that work.
               </p>
             </div>
           </ScrollReveal>
@@ -56,5 +61,5 @@ export function AboutPhilosophy() {
         </div>
       </div>
     </section>
-  )
+  );
 }

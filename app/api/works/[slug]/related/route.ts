@@ -3,14 +3,16 @@ import { supabase } from "@/lib/supabase";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
+  const { slug } = await params;
+
   try {
     // First get the current work's created_at
     const { data: currentWork, error: currentWorkError } = await supabase
       .from("works")
       .select("created_at")
-      .eq("slug", params.slug)
+      .eq("slug", slug)
       .single();
 
     if (currentWorkError) throw currentWorkError;
@@ -19,7 +21,7 @@ export async function GET(
     const { data: relatedWorks, error: relatedWorksError } = await supabase
       .from("works")
       .select("*")
-      .neq("slug", params.slug)
+      .neq("slug", slug)
       .order("created_at", { ascending: false })
       .limit(2);
 

@@ -1,34 +1,26 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
+  request: Request,
+  context: { params: Promise<{ slug: string }> }
 ) {
+  const { slug } = await context.params;
+
   try {
-    // First get the current insight's created_at
-    const { data: currentInsight, error: currentInsightError } = await supabase
+    const { data: relatedInsights, error } = await supabase
       .from("insights")
-      .select("created_at")
-      .eq("slug", params.slug)
-      .single();
+      .select("*")
+      .neq("slug", slug)
+      .order("created_at", { ascending: false })
+      .limit(2);
 
-    if (currentInsightError) throw currentInsightError;
-
-    // Get related insights (excluding current insight)
-    const { data: relatedInsights, error: relatedInsightsError } =
-      await supabase
-        .from("insights")
-        .select("*")
-        .neq("slug", params.slug)
-        .order("created_at", { ascending: false })
-        .limit(2);
-
-    if (relatedInsightsError) throw relatedInsightsError;
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
     return NextResponse.json({ data: relatedInsights });
   } catch (error) {
-    console.error("Error fetching related insights:", error);
     return NextResponse.json(
       { error: "Failed to fetch related insights" },
       { status: 500 }

@@ -1,18 +1,28 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { type NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
 
-export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
-  const { slug } = params
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  const { slug } = await params;
 
   try {
     // Get the insight
-    const { data: insight, error } = await supabase.from("insights").select("*").eq("slug", slug).single()
+    const { data: insight, error } = await supabase
+      .from("insights")
+      .select("*")
+      .eq("slug", slug)
+      .single();
 
     if (error) {
       if (error.code === "PGRST116") {
-        return NextResponse.json({ message: "Insight not found" }, { status: 404 })
+        return NextResponse.json(
+          { message: "Insight not found" },
+          { status: 404 }
+        );
       }
-      throw error
+      throw error;
     }
 
     // Get the next article
@@ -20,42 +30,51 @@ export async function GET(request: NextRequest, { params }: { params: { slug: st
       .from("next_articles")
       .select("*")
       .eq("insight_id", insight.id)
-      .single()
+      .single();
 
     if (nextArticleError && nextArticleError.code !== "PGRST116") {
-      throw nextArticleError
+      throw nextArticleError;
     }
 
     // Format the insight to match the expected structure
     const formattedInsight = {
       ...insight,
       nextArticle: nextArticle || null,
-    }
+    };
 
-    return NextResponse.json(formattedInsight)
+    return NextResponse.json(formattedInsight);
   } catch (error) {
-    console.error("Error fetching insight:", error)
-    return NextResponse.json({ message: "Failed to fetch insight" }, { status: 500 })
+    console.error("Error fetching insight:", error);
+    return NextResponse.json(
+      { message: "Failed to fetch insight" },
+      { status: 500 }
+    );
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { slug: string } }) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
   try {
-    const { slug } = params
-    const body = await request.json()
+    const { slug } = params;
+    const body = await request.json();
 
     // Get the insight ID
     const { data: existingInsight, error: fetchError } = await supabase
       .from("insights")
       .select("id")
       .eq("slug", slug)
-      .single()
+      .single();
 
     if (fetchError) {
       if (fetchError.code === "PGRST116") {
-        return NextResponse.json({ message: "Insight not found" }, { status: 404 })
+        return NextResponse.json(
+          { message: "Insight not found" },
+          { status: 404 }
+        );
       }
-      throw fetchError
+      throw fetchError;
     }
 
     // Update the insight
@@ -69,9 +88,9 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
         image: body.image,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", existingInsight.id)
+      .eq("id", existingInsight.id);
 
-    if (updateError) throw updateError
+    if (updateError) throw updateError;
 
     // Update the next article if provided
     if (body.nextArticle) {
@@ -80,10 +99,10 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
         .from("next_articles")
         .select("id")
         .eq("insight_id", existingInsight.id)
-        .single()
+        .single();
 
       if (checkError && checkError.code !== "PGRST116") {
-        throw checkError
+        throw checkError;
       }
 
       if (existingNextArticle) {
@@ -97,43 +116,60 @@ export async function PUT(request: NextRequest, { params }: { params: { slug: st
             image: body.nextArticle.image,
             slug: body.nextArticle.slug,
           })
-          .eq("id", existingNextArticle.id)
+          .eq("id", existingNextArticle.id);
 
-        if (updateNextError) throw updateNextError
+        if (updateNextError) throw updateNextError;
       } else {
         // Insert new next article
-        const { error: insertError } = await supabase.from("next_articles").insert({
-          insight_id: existingInsight.id,
-          title: body.nextArticle.title,
-          date: body.nextArticle.date,
-          author: body.nextArticle.author,
-          image: body.nextArticle.image,
-          slug: body.nextArticle.slug,
-        })
+        const { error: insertError } = await supabase
+          .from("next_articles")
+          .insert({
+            insight_id: existingInsight.id,
+            title: body.nextArticle.title,
+            date: body.nextArticle.date,
+            author: body.nextArticle.author,
+            image: body.nextArticle.image,
+            slug: body.nextArticle.slug,
+          });
 
-        if (insertError) throw insertError
+        if (insertError) throw insertError;
       }
     }
 
-    return NextResponse.json({ success: true, message: "Insight updated successfully" })
+    return NextResponse.json({
+      success: true,
+      message: "Insight updated successfully",
+    });
   } catch (error) {
-    console.error("Error updating insight:", error)
-    return NextResponse.json({ success: false, message: "Failed to update insight" }, { status: 400 })
+    console.error("Error updating insight:", error);
+    return NextResponse.json(
+      { success: false, message: "Failed to update insight" },
+      { status: 400 }
+    );
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { slug: string } }) {
-  const { slug } = params
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
+  const { slug } = params;
 
   try {
     // Delete the insight (next_articles will be deleted via cascade)
-    const { error } = await supabase.from("insights").delete().eq("slug", slug)
+    const { error } = await supabase.from("insights").delete().eq("slug", slug);
 
-    if (error) throw error
+    if (error) throw error;
 
-    return NextResponse.json({ success: true, message: "Insight deleted successfully" })
+    return NextResponse.json({
+      success: true,
+      message: "Insight deleted successfully",
+    });
   } catch (error) {
-    console.error("Error deleting insight:", error)
-    return NextResponse.json({ success: false, message: "Failed to delete insight" }, { status: 500 })
+    console.error("Error deleting insight:", error);
+    return NextResponse.json(
+      { success: false, message: "Failed to delete insight" },
+      { status: 500 }
+    );
   }
 }

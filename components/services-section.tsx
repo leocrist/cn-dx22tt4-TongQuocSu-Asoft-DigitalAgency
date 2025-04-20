@@ -32,7 +32,7 @@ export function ServicesSection() {
           <div className="flex flex-col">
             <div className="rounded-3xl overflow-hidden mb-6">
               <Image
-                src="/placeholder.svg?height=400&width=400"
+                src="/branding.png"
                 alt="Branding Service"
                 width={400}
                 height={400}
@@ -58,7 +58,7 @@ export function ServicesSection() {
           <div className="flex flex-col mt-8 md:mt-16">
             <div className="rounded-3xl overflow-hidden mb-6">
               <Image
-                src="/placeholder.svg?height=400&width=400"
+                src="/uiux.png"
                 alt="UI/UX Design Service"
                 width={400}
                 height={400}
@@ -87,7 +87,7 @@ export function ServicesSection() {
           <div className="flex flex-col">
             <div className="rounded-3xl overflow-hidden mb-6">
               <Image
-                src="/placeholder.svg?height=400&width=400"
+                src="/web.png"
                 alt="Web Development Service"
                 width={400}
                 height={400}
@@ -113,7 +113,7 @@ export function ServicesSection() {
           <div className="flex flex-col mt-8 md:mt-16">
             <div className="rounded-3xl overflow-hidden mb-6">
               <Image
-                src="/placeholder.svg?height=400&width=400"
+                src="/illus.png"
                 alt="Illustration Service"
                 width={400}
                 height={400}

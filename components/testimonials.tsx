@@ -103,7 +103,7 @@ export function Testimonials() {
               {Array.from({ length: Math.ceil(testimonials.length / 2) }).map((_, pairIndex) => (
                 <div key={pairIndex} className="w-full flex-shrink-0 grid grid-cols-1 md:grid-cols-2 gap-8">
                   {testimonials.slice(pairIndex * 2, pairIndex * 2 + 2).map((testimonial) => (
-                    <div key={testimonial.id} className="border-t pt-8">
+                    <div key={testimonial.id} className="border border-[#d2d2d2] rounded-xl p-10">
                       <h3 className="text-3xl font-bold mb-6">{testimonial.title}</h3>
                       <p className="text-gray-700 mb-12">{testimonial.content}</p>
                       <div>

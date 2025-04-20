@@ -9,7 +9,7 @@ export function HeroImage() {
       <ScrollReveal delay={600}>
         <div className="rounded-3xl overflow-hidden" style={{ height: "min(80vh, 600px)" }}>
           <Image
-            src="/placeholder.svg?height=500&width=1200"
+            src="/hero_bg.png"
             alt="Abstract colorful gradient spheres"
             width={1200}
             height={500}

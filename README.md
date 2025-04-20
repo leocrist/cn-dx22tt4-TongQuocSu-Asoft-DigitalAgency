@@ -39,7 +39,7 @@ Before you begin, ensure you have installed:
 2. **Clone your fork**
 ```bash
 git clone https://github.com/your-username/cn-dx22tt4-tongquocsu-Asoft-DigitalAgency.git
-cd cn-dx22tt4-tongquocsu-Asoft-DigitalAgency
+cd cn-dx22tt4-tongquocsu-Asoft-DigitalAgency/scr
 ```
 
 3. **Add upstream remote** (optional)
@@ -56,12 +56,15 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhY
 ```
 
 5. **Install dependencies**
+
 ```bash
+cd cn-dx22tt4-tongquocsu-Asoft-DigitalAgency/scr
 yarn install
 ```
 
 6. **Start development server**
 ```bash
+cd cn-dx22tt4-tongquocsu-Asoft-DigitalAgency/scr
 yarn dev
 ```
 

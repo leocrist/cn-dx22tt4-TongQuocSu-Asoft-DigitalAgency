@@ -1,11 +1,31 @@
-import Link from "next/link"
-import Image from "next/image"
-import { ScrollReveal } from "./scroll-reveal"
-import { works } from "@/lib/data"
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { ScrollReveal } from "./scroll-reveal";
+import { useFeaturedWorks } from "@/lib/hooks/useData";
 
 export function SelectedWorks() {
-  // Get the first two works for featured display
-  const featuredWorks = works.slice(0, 2)
+  const { data: featuredWorks, loading, error } = useFeaturedWorks();
+  if (loading) {
+    return (
+      <section className="px-6 md:px-12 py-16">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#6E13E8]"></div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="px-6 md:px-12 py-16">
+        <div className="text-center text-red-500">
+          Error loading featured works: {error}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="px-6 md:px-12 py-16">
@@ -18,7 +38,8 @@ export function SelectedWorks() {
               Works
             </h2>
             <p className="text-gray-700 max-w-xl">
-              Showcase of Excellence: Premier UI/UX Design & Innovative Web Solutions
+              Showcase of Excellence: Premier UI/UX Design & Innovative Web
+              Solutions
             </p>
           </div>
         </ScrollReveal>
@@ -35,7 +56,11 @@ export function SelectedWorks() {
 
       <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
         {featuredWorks.map((work, index) => (
-          <ScrollReveal key={index} delay={300 + index * 100} direction={index % 2 === 0 ? "left" : "right"}>
+          <ScrollReveal
+            key={work.slug}
+            delay={300 + index * 100}
+            direction={index % 2 === 0 ? "left" : "right"}
+          >
             <div>
               <Link href={`/works/${work.slug}`} className="block group">
                 <div className="rounded-3xl overflow-hidden mb-6">
@@ -62,5 +87,5 @@ export function SelectedWorks() {
         ))}
       </div>
     </section>
-  )
+  );
 }

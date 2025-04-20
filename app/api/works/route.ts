@@ -11,7 +11,6 @@ export async function GET(request: NextRequest) {
     const result = await fetchPaginatedData("works", page, limit, {
       relations: ["work_details"],
     });
-
     return NextResponse.json(result);
   } catch (error) {
     console.error("Error fetching works:", error);

@@ -1,11 +1,32 @@
-import Link from "next/link"
-import Image from "next/image"
-import { ScrollReveal } from "./scroll-reveal"
-import { insights } from "@/lib/data"
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { ScrollReveal } from "./scroll-reveal";
+import { useFeaturedInsights } from "@/lib/hooks/useData";
 
 export function Insights() {
-  // Get the first two insights for featured display
-  const featuredInsights = insights.slice(0, 2)
+  const { data: featuredInsights, loading, error } = useFeaturedInsights();
+
+  if (loading) {
+    return (
+      <section className="px-6 md:px-12 py-16">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#6E13E8]"></div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="px-6 md:px-12 py-16">
+        <div className="text-center text-red-500">
+          Error loading featured insights: {error}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="px-6 md:px-12 py-16">
@@ -14,8 +35,8 @@ export function Insights() {
           <div>
             <h2 className="text-5xl font-bold mb-4">Insights</h2>
             <p className="text-gray-700 max-w-xl">
-              Delving into the latest trends, insights, and strategies in the art and science of web design and UI/UX,
-              sharing tips, trends.
+              Delving into the latest trends, insights, and strategies in the
+              art and science of web design and UI/UX, sharing tips, trends.
             </p>
           </div>
         </ScrollReveal>
@@ -31,8 +52,12 @@ export function Insights() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {featuredInsights.map((insight, index) => (
-          <ScrollReveal key={index} delay={300 + index * 100} direction={index % 2 === 0 ? "left" : "right"}>
+        {featuredInsights?.map((insight, index) => (
+          <ScrollReveal
+            key={insight.slug}
+            delay={300 + index * 100}
+            direction={index % 2 === 0 ? "left" : "right"}
+          >
             <Link href={`/insights/${insight.slug}`} className="block group">
               <div className="rounded-3xl overflow-hidden bg-[#f5f3ff] h-full">
                 <div className="h-[300px] overflow-hidden">
@@ -60,5 +85,5 @@ export function Insights() {
         ))}
       </div>
     </section>
-  )
+  );
 }

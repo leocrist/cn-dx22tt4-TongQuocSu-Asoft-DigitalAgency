@@ -1,0 +1,47 @@
+Main Task: Frontend & Backend Development (Phase 1)
+Technologies: Next.js, Node.js, Supabase
+
+Detailed Tasks:
+	•	Set up project structure (Next.js for frontend, Node.js for backend).
+	•	Design layout for homepage, header, and footer.
+    •	Build main UI components 
+    - for Main site
+            about-hero.tsx
+            about-philosophy.tsx
+            about-team.tsx
+            about-testimonials.tsx
+            about-why-choose-us.tsx
+            call-to-action.tsx
+            footer.tsx
+            header.tsx
+            hero-image.tsx
+            hero-section.tsx
+            insights.tsx
+            marquee-banner.tsx
+            parallax-image.tsx
+            scroll-reveal.tsx
+            scroll-to-top.tsx
+            scrolling-banner.tsx
+            service-tabs.tsx
+            services-section.tsx
+            team-banner.tsx
+            testimonials.tsx
+            theme-provider.tsx
+    - for Admin site
+            admin-sidebar.tsx
+            admin-sidebar-logo.tsx
+            auth-guard.tsx
+            delete-confirm-modal.tsx
+            insight-form.tsx
+            insights-table.tsx
+            pagination.tsx
+            snackbar-provider.tsx
+            work-form.tsx
+            works-table.tsx
+    •	Develop reusable components (buttons, modals, forms, etc.).
+    •	Implement navigation components (menu, sidebar, breadcrumbs).
+    •	Create authentication components (login, signup, password reset).
+	•	Install Supabase and design basic schemas (works, insights).
+	•	Create basic RESTful APIs for static contents.
+	•	Connect frontend with backend via API.
+	•	Perform initial testing of data rendering between frontend and backend.

@@ -28,7 +28,7 @@ export default function ServicesPage() {
               <div>
                 <div className="rounded-3xl overflow-hidden mb-6">
                   <Image
-                    src="/placeholder.svg?height=400&width=600"
+                    src="/branding.png" 
                     alt="Branding Service"
                     width={600}
                     height={400}
@@ -69,7 +69,7 @@ export default function ServicesPage() {
               <div>
                 <div className="rounded-3xl overflow-hidden mb-6">
                   <Image
-                    src="/placeholder.svg?height=400&width=600"
+                    src="/uiux.png"
                     alt="UI/UX Design Service"
                     width={600}
                     height={400}
@@ -110,7 +110,7 @@ export default function ServicesPage() {
               <div>
                 <div className="rounded-3xl overflow-hidden mb-6">
                   <Image
-                    src="/placeholder.svg?height=400&width=600"
+                    src="/web.png"
                     alt="Web Development Service"
                     width={600}
                     height={400}
@@ -152,7 +152,7 @@ export default function ServicesPage() {
               <div>
                 <div className="rounded-3xl overflow-hidden mb-6">
                   <Image
-                    src="/placeholder.svg?height=400&width=600"
+                    src="/illus.png"
                     alt="Illustration Service"
                     width={600}
                     height={400}

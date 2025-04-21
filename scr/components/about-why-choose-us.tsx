@@ -24,7 +24,7 @@ export function AboutWhyChooseUs() {
       <ScrollReveal delay={400}>
         <div className="w-full h-[500px] md:h-[600px]">
           <ParallaxImage
-            src="/placeholder.svg?height=800&width=1200"
+            src="/9.png"
             alt="Abstract 3D shapes representing innovation"
             className="h-full"
             scale={1.3}

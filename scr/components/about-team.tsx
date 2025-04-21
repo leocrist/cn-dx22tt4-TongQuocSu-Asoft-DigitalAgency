@@ -13,40 +13,42 @@ export function AboutTeam() {
   const teamMembers: TeamMember[] = [
     {
       id: 1,
-      name: "Ralph Jones",
-      position: "Frontend Developer",
-      image: "/placeholder.svg?height=400&width=400",
+      name: "Eleanor",
+      position: "CEO",
+      image: "/8.png",
     },
     {
       id: 2,
-      name: "Daisy Smith",
-      position: "UI/UX Designer",
-      image: "/placeholder.svg?height=400&width=400",
+      name: "Lily Charlotte",
+      position: "Director",
+      image: "/1.png",
     },
     {
       id: 3,
-      name: "James Marnus",
-      position: "Graphics Designer",
-      image: "/placeholder.svg?height=400&width=400",
+      name: "Ralph Jones",
+      position: "Frontend Developer",
+      image: "/6.png",
     },
     {
       id: 4,
-      name: "Eleanor",
-      position: "CEO",
-      image: "/placeholder.svg?height=400&width=400",
+      name: "Daisy Smith",
+      position: "UI/UX Designer",
+      image: "/5.png",
     },
     {
       id: 5,
-      name: "Jos Bale",
-      position: "Framer Developer",
-      image: "/placeholder.svg?height=400&width=400",
+      name: "James Marnus",
+      position: "Graphics Designer",
+      image: "/7.png",
     },
+
     {
       id: 6,
-      name: "Lily Charlotte",
-      position: "Director",
-      image: "/placeholder.svg?height=400&width=400",
+      name: "Jos Bale",
+      position: "Backend Developer",
+      image: "/2.png",
     },
+
   ]
 
   return (

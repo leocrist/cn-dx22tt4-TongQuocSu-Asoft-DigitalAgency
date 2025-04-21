@@ -12,7 +12,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Digital Agency - Solutions",
+  title: "Asoft Digital Agency - Solutions",
   description:
     "A premier strategic branding and design agency, dedicated to elevating brands with groundbreaking ideas.",
     generator: 'v0.dev'

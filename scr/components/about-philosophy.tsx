@@ -14,7 +14,7 @@ export function AboutPhilosophy() {
         <ScrollReveal delay={200} direction="left">
           <div className="h-[500px]">
             <ParallaxImage
-              src="/placeholder.svg?height=600&width=600"
+              src="/10.png"
               alt="Design elements representing our philosophy"
               className="h-full"
               scale={1.3}

@@ -25,7 +25,7 @@ export function AboutHero() {
       <ScrollReveal delay={400}>
         <div className="w-full h-[600px]">
           <ParallaxImage
-            src="/placeholder.svg?height=800&width=1200"
+            src="/11.png"
             alt="Infinity Solutions office space"
             className="h-full"
             scale={1.3}
